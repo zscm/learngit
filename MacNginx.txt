@@ -1,0 +1,50 @@
+MAC 下安装 Nginx
+    一、安装工具
+      homebrew
+      步骤：
+          1、打开终端，习惯性的命令：
+              brew update    // 检查 brew 更新
+          2、继续执行命令：
+              brew search nginx  // 查询要安装的软件是否存在
+          3、这里多执行一条“废”命令，不过有利于我们后面的配置：
+              brew info nginx
+              /**
+              * 我们可以看到，
+              * nginx在本地还未安装（Not installed），
+              * nginx的来源（From），
+              * Docroot默认为/usr/local/var/www，
+              * 在/usr/local/etc/nginx/nginx.conf配置文件中默认端口被配置为8080从而使nginx运行时不需要加sudo，
+              * nginx将在/usr/local/etc/nginx/servers/目录中加载所有文件，
+              * 以及我们可以通过最简单的命令 ‘nginx’ 来启动nginx。
+              */
+          4、开始正式安装：
+              brew install nginx
+          5、查看nginx安装目录(是否如info所说):
+              1、先执行命令
+                  open /usr/local/etc/nginx
+                  /**
+                  * 成功打开nginx目录，
+                  * 也可以看到如info所说servers目录以及nginx.conf的配置文件（后面会用到这个配置文件）。
+                  * 但我们并没有找到nginx被安装到了哪里。
+                  */
+              2、我们继续执行命令:
+                  open /usr/local/Cellar/nginx   // 其实这个才是 nginx 被安装的目录
+                  /**
+                  * 会看到一个以当前安装的nginx的版本号为名称的文件夹，这个就是我们安装的nginx根目录啦。
+                  * 进入1.12.2_1/bin 目录，会看到nginx的可执行启动文件。
+                  * 同样的，我们在1.12.2_1/目录下还可以看到一个名字为html的快捷方式文件夹（暂且就这么叫吧），
+                  * 进入该目录我们会发现其实它指向的就是/usr/local/var/www目录，
+                  * 这个在上面我们查看的info信息中有提到（Dcroot）
+                  */
+          6、启动nginx，终端输入入戏命令：
+              nginx
+          7、访问验证
+              打开浏览器访问localhost:8080,这里跟网上的一些教程会有些不一样，正常情况下到这一步就会能看到nginx的欢迎界面啦。
+
+              然而如果遇到了（403 Forbidden）坑这种爹的情况
+                1、通过配置文件我们可以看到其默认的网站根目录为html（即/usr/local/var/www），
+                2、而默认的索引文件为index.html 和 index.htm，
+                3、这下就找到原因了，原来我们的根目录少了首页索引文件，那就来手动创建一个吧：
+                    1、cd /usr/local/var/www/                      //进入到www目录下
+                    2、touch index.html                            //创建一个新的index.html文件
+                    3、vim index.html                              //编辑该文件 
